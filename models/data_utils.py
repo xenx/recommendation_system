@@ -6,7 +6,7 @@ import random
 from pymongo import MongoClient
 
 
-class TvrainData:
+class TvrainData():
     def __init__(self):
         '''
         :param data: Pandas Frame with data.
@@ -14,9 +14,9 @@ class TvrainData:
         '''
         mongodb_items = list(MongoClient(os.environ['MONGODB_URL']).tvrain.tvrain.find())
         self.dataframe = pd.DataFrame.from_dict(mongodb_items)
-        
+
         # This shit is about mongo can't save id -> str.
-        self.dataframe._id = list(map(lambda _id: str(_id), self.dataframe._id.values))
+        self.dataframe._id = list(map(str, self.dataframe._id.values))
 
     def get_random_articles(self, n):
         '''Returns N of topics for index.html'''

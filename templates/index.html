@@ -34,14 +34,14 @@
   }
   </style>
 </head>
-<:body>
+<body>
   <h1>News recommender.</h1>
   <form>
     {% for part in parts %}
-    <div>
-      <input type="checkbox" value="{{ part['_id'] }}", name="{{ part['_id'] }}">
-      <p> {{ part['title'] }} </p>
-    </div>
+      <div>
+        <input type="checkbox" value="{{ part['_id'] }}", name="{{ part['_id'] }}">
+        <p> {{ part['title'] }} </p>
+      </div>
     {% endfor %}
   </form>
   <div class='results'></div>
