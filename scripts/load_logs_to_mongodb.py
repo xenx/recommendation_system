@@ -4,6 +4,7 @@ from datetime import datetime
 from collections import defaultdict
 from pymongo import MongoClient
 
+print('Parsing logs')
 logs_file = open(sys.argv[1])
 article_urls = set()
 article_views = defaultdict(list)  # article_url: list of user's id's
@@ -11,12 +12,15 @@ article_times = {}
 for line in logs_file:
     try:
         timestamp, url, user = line.strip().split('\t')
-    except IndexError:
+    except (IndexError, ValueError):
         continue
-    timestamp = timestamp.strip(' GET').strip('Z')
-    # Delete ms from timestamp
-    timestamp = ''.join(timestamp.split('.')[:-1])
-    event_time = datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S')
+    try:
+        timestamp = timestamp.strip(' GET').strip('Z')
+        # Delete ms from timestamp
+        timestamp = ''.join(timestamp.split('.')[:-1])
+        event_time = datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S')
+    except ValueError:
+        continue
     if not url or not user:
         continue
     if not url.startswith('https://tvrain.ru/'):
@@ -27,6 +31,7 @@ for line in logs_file:
     if url not in article_times:
         article_times[url] = event_time
 
+print('Connecting to MongoDB')
 mongodb_client = MongoClient(os.environ['MONGODB_URL'])
 db = mongodb_client.tvrain
 parsed_articles = db.tvrain
@@ -34,6 +39,7 @@ articles = db.articles
 # Clear articles
 articles.remove({})
 
+print('Loading data to MongoDB')
 for article in parsed_articles.find():
     if article['url'] not in article_urls:
         continue
