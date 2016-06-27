@@ -31,15 +31,23 @@ mongodb_client = MongoClient(os.environ['MONGODB_URL'])
 db = mongodb_client.tvrain
 parsed_articles = db.tvrain
 articles = db.articles
+# Clear articles
+articles.remove({})
 
 for article in parsed_articles.find():
     if article['url'] not in article_urls:
         continue
+    views = article_views[article['url']]
+    compressed_views = []
+    # Save only every 10th view
+    for i in range(len(views)):
+        if i % 10 == 0:
+            compressed_views.append(views[i])
     articles.insert_one({
         '_id': article['_id'],
         'title': article['title'],
         'text': article['text'],
-        'views': article_views[article['url']],
+        'views': compressed_views,
         'time': article_times[article['url']]
     })
 
