@@ -1,6 +1,6 @@
 ![scrot](https://github.com/tvorozid/recommendation_system/blob/master/scrot.png)
 
-[![GoTo](http://goto.msk.ru/templates/gk_university/images/favicon.ico)](http://goto.msk.ru/)
+[![GoTo](https://img.shields.io/badge/GoTo-project-4bb89b.svg)](http://goto.msk.ru)
 [![Code Health](https://landscape.io/github/xenx/recommendation_system/master/landscape.svg?style=flat)](https://landscape.io/github/xenx/recommendation_system/master)
 [![Code Climate](https://codeclimate.com/github/tvorozid/recommendation_system/badges/gpa.svg)](https://codeclimate.com/github/tvorozid/recommendation_system)
 
